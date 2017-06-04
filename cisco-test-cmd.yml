@@ -1,0 +1,28 @@
+---
+- hosts: cisco-devices
+  connection: local
+
+  tasks:
+  - name: 1:SHOW IP INT BRIEF
+    ios_command:
+      commands: show ip int brief
+
+  - name: 2:SHOW VERSION AND CHECK TO SEE IF OUTPUT CONTAINS IOS
+    ios_command:
+      commands: show version
+      wait_for: result[0] contains IOS
+
+  - name: 3:RUN MULTIPLE COMMANDS ON REMOTE NODES
+    ios_command:
+      commands:
+        - show ip int brief
+        - show version
+
+  - name: 4:RUN MULTIPLE COMMANDS AND EVALUATE THE OUTPUT
+    ios_command:
+      commands:
+        - show version
+        - show ip interface brief
+      wait_for:
+        - result[0] contains IOS
+        - result[1] contains Loopback0
